@@ -1,0 +1,72 @@
+html, 
+body {
+    height: 100%;
+    background-color: black;
+    color: white;
+}
+
+.container {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+}
+
+#letter {
+    text-transform: uppercase;
+    font-size: 500px;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.pos-relative {
+    position: relative;
+}
+
+.mask {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 10;
+    opacity: 100%;
+}
+
+.to-red {
+    animation-name: animRed;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes animRed {
+    from {color: white;}
+    to {color: red;}
+  }
+
+.to-green {
+    animation-name: animGreen;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes animGreen {
+    from {color: white;}
+    to {color: green;}
+}
+
+.to-visible {
+    animation-name: toVisible;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes toVisible {
+    from {opacity: 100%;}
+    to {opacity: 0%;}
+}
