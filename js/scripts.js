@@ -52,7 +52,8 @@ const shuffleArray = (array) => {
 const handlePress = (e) => {
     console.log('press');
     if (keyPressAutorise) {
-        const letterPressed = String.fromCharCode(e.keyCode);
+        const letterPressed = String.fromCharCode(e.charCode);
+        console.log(`${letterPressed} ${shuffledLetters[currentIndex]}`);
         if (letterPressed === shuffledLetters[currentIndex]) {
             trouveAnim();
         } else {
