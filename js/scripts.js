@@ -25,7 +25,7 @@ const trouveAnim = () => {
             setTimeout(() => {
                 document.getElementById('mask').classList.remove('to-visible');
                 resolve();
-            }, 2000);
+            }, 4000);
     }).then(x => {
         showNextLetter();
         keyPressAutorise = true;
