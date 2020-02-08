@@ -2,10 +2,12 @@ const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'
 let keyPressAutorise = true;
 let shuffledLetters;
 let currentIndex;
-
+const clapSound = new Audio('./sound/clap.mp3');
+const failSound = new Audio('./sound/fail.mp3');
 
 const falseAnim = () => {
     keyPressAutorise = false;
+    failSound.play();
     console.log('falseAnim');
     document.getElementById('letter').classList.add('to-red');
     setTimeout(() => document.getElementById('letter').classList.remove('to-red'), 1000);
@@ -15,7 +17,7 @@ const falseAnim = () => {
 const trouveAnim = () => {
     console.log('trouveAnim');
     keyPressAutorise = false;
-
+    clapSound.play();
     document.getElementById('letter').classList.add('to-green');
     document.getElementById('mask').classList.add('to-visible');
 
