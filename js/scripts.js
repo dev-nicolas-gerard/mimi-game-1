@@ -5,34 +5,38 @@ let currentIndex;
 const clapSound = new Audio('./sound/clap.mp3');
 const failSound = new Audio('./sound/fail.mp3');
 
-const falseAnim = () => {
-    keyPressAutorise = false;
-    failSound.play();
-    console.log('falseAnim');
-    document.getElementById('letter').classList.add('to-red');
-    setTimeout(() => document.getElementById('letter').classList.remove('to-red'), 1000);
-    keyPressAutorise = true;
+const falseAnim = async () => {
+    return new Promise(async function (resolve) {
+        console.log('falseAnim');
+        failSound.play();
+        await addClass('letter', 'to-red', 1000);
+        resolve();
+    });
 };
 
-const trouveAnim = () => {
-    console.log('trouveAnim');
-    keyPressAutorise = false;
-    clapSound.play();
-    document.getElementById('letter').classList.add('to-green');
-    document.getElementById('mask').classList.add('to-visible');
-
-    setTimeout(() => document.getElementById('letter').classList.remove('to-green'), 2000);
-
-    new Promise(function(resolve, reject) {
-            setTimeout(() => {
-                document.getElementById('mask').classList.remove('to-visible');
-                resolve();
-            }, 4000);
-    }).then(x => {
+const trouveAnim = async () => {
+    return new Promise(async function (resolve) {
+        console.log('trouveAnim');
+        clapSound.play();
+        addClass('letter', 'to-green', 4000);
+        await addClass('mask', 'to-visible', 4000);
         showNextLetter();
-        keyPressAutorise = true;
+        resolve();
     });
-    
+};
+
+const addClass = async (element, claz, timeToRemove) => {
+    console.log('add class');
+    document.getElementById(element).classList.add(claz);
+    if (timeToRemove) {
+        console.log('remove');
+        return new Promise(function (resolve) {
+            setTimeout(() => {
+                document.getElementById(element).classList.remove(claz);
+                resolve();
+            }, timeToRemove);
+        })
+    }
 };
 
 const loadImg = () => {
@@ -40,27 +44,28 @@ const loadImg = () => {
     document.getElementById('image').src = `./img/${shuffledLetters[currentIndex]}.png`;
 };
 
-
 const shuffleArray = (array) => {
     let arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-
     return arr;
 }
 
-const handlePress = (e) => {
+const handlePress = async (e) => {
     console.log('press');
-    if (keyPressAutorise) {
-        const letterPressed = String.fromCharCode(e.keyCode);
-        if (letterPressed === shuffledLetters[currentIndex]) {
-            trouveAnim();
-        } else {
-            falseAnim();
-        }
+    if (!keyPressAutorise) {
+        return;
     }
+    keyPressAutorise = false;
+    const letterPressed = String.fromCharCode(e.keyCode);
+    if (letterPressed === shuffledLetters[currentIndex]) {
+        await trouveAnim();
+    } else {
+        await falseAnim();
+    }
+    keyPressAutorise = true;
 };
 
 const showNextLetter = () => {
@@ -81,8 +86,6 @@ const init = () => {
     showNextLetter();
 };
 
-
 // -----------
-
 document.body.addEventListener('keypress', handlePress);
 init();
